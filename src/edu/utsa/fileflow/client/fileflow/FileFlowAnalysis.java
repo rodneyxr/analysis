@@ -35,8 +35,8 @@ public class FileFlowAnalysis extends Analysis<FileFlowAnalysisDomain> {
 	@Override
 	public FileFlowAnalysisDomain onFinish(FileFlowAnalysisDomain domain) throws AnalysisException {
 		// Write post and init to DOT file
-		GraphvizGenerator.saveDOTToFile(domain.init.toDot(), "scripts/init" + runCounter + ".dot");
-		GraphvizGenerator.saveDOTToFile(domain.post.toDot(), "scripts/post" + runCounter + ".dot");
+		GraphvizGenerator.saveDOTToFile(domain.init.toDot(), "debug/init" + runCounter + ".dot");
+		GraphvizGenerator.saveDOTToFile(domain.post.toDot(), "debug/post" + runCounter + ".dot");
 		lastInit = domain.init.clone();
 		runCounter++;
 		return super.onFinish(domain);

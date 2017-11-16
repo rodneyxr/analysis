@@ -4,6 +4,7 @@ import edu.utsa.fileflow.analysis.Analysis;
 import edu.utsa.fileflow.analysis.AnalysisException;
 import edu.utsa.fileflow.cfg.FlowPointContext;
 import edu.utsa.fileflow.client.AssignContext;
+import edu.utsa.fileflow.client.fileflow.FileFlowAnalysisMain;
 
 /**
  * This class overrides some methods that the analysis framework will call when
@@ -12,6 +13,15 @@ import edu.utsa.fileflow.client.AssignContext;
  * Created by Rodney on 2/11/2017.
  */
 public class VariableAnalysis extends Analysis<VariableAnalysisDomain> {
+
+	public VariableAnalysisDomain onFinish(VariableAnalysisDomain domain) throws AnalysisException {
+		if (FileFlowAnalysisMain.DEBUG) {
+			System.out.println("***** Live Variable Analysis Results:");
+			System.out.println(domain.liveVariables);
+			System.out.println();
+		}
+		return super.onFinish(domain);
+	}
 
 	@Override
 	public VariableAnalysisDomain enterAssignment(VariableAnalysisDomain domain, FlowPointContext context) throws AnalysisException {

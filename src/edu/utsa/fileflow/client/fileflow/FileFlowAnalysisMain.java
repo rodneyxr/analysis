@@ -45,7 +45,8 @@ public class FileFlowAnalysisMain {
 			ffaAnalyzer.analyze(cfg);
 
 			// Run again
-			ffaAnalyzer.analyze(cfg);
+			FileFlowAnalysisDomain results = ffaAnalyzer.analyze(cfg);
+			GraphvizGenerator.saveDOTToFile(results.post.toDot(), TEST_SCRIPT + ".dot");
 		} catch (AnalysisException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -60,8 +61,8 @@ public class FileFlowAnalysisMain {
 	private static void writeDOT(FlowPoint cfg) {
 		String dot = GraphvizGenerator.generateDOT(cfg);
 		GraphvizGenerator.saveDOTToFile(dot, TEST_SCRIPT + ".cfg.dot");
-		if (FileFlowAnalysisMain.DEBUG) {
-			System.out.println("DOT file written to: 'dot/" + TEST_SCRIPT + ".dot'");
+		if (DEBUG) {
+			System.out.println("CFG file written to: 'dot/" + TEST_SCRIPT + ".cfg.dot'");
 			System.out.println();
 		}
 	}

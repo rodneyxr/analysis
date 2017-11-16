@@ -5,6 +5,7 @@ import edu.utsa.fileflow.analysis.Analysis;
 import edu.utsa.fileflow.analysis.AnalysisException;
 import edu.utsa.fileflow.cfg.FlowPointContext;
 import edu.utsa.fileflow.client.AssignContext;
+import edu.utsa.fileflow.client.fileflow.FileFlowAnalysisMain;
 import edu.utsa.fileflow.client.fileflow.variable.Variable;
 import edu.utsa.fileflow.client.fileflow.variable.VariableAnalysisDomain;
 
@@ -23,6 +24,15 @@ public class GrammarAnalysis extends Analysis<GrammarAnalysisDomain> {
 	public GrammarAnalysisDomain onBefore(GrammarAnalysisDomain domain, FlowPointContext context) throws AnalysisException {
 		vDomain = (VariableAnalysisDomain) context.getFlowPoint().getOriginalDomain(VariableAnalysisDomain.class);
 		return super.onBefore(domain, context);
+	}
+
+	@Override
+	public GrammarAnalysisDomain onFinish(GrammarAnalysisDomain domain) throws AnalysisException {
+		if (FileFlowAnalysisMain.DEBUG) {
+			System.out.println("***** Grammar Analysis Results:");
+			System.out.println(domain.grammar);
+		}
+		return super.onFinish(domain);
 	}
 
 	/**
