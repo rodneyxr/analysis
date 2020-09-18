@@ -12,6 +12,8 @@ import edu.utsa.fileflow.client.fileflow.grammar.GrammarAnalysisDomain;
 import edu.utsa.fileflow.client.fileflow.variable.VariableAnalysisDomain;
 import edu.utsa.fileflow.utilities.GraphvizGenerator;
 
+import java.util.logging.Logger;
+
 public class FileFlowAnalysis extends Analysis<FileFlowAnalysisDomain> {
 
     // Previous analysis domains
@@ -22,9 +24,12 @@ public class FileFlowAnalysis extends Analysis<FileFlowAnalysisDomain> {
     private FileStructure lastInit = null;
     private int runCounter = 0;
 
+    // Logging
+    private Logger logger = Logger.getLogger("FFA");
+
     @Override
     public FileFlowAnalysisDomain onBegin(FileFlowAnalysisDomain domain, FlowPoint flowPoint) throws AnalysisException {
-        System.out.println("\n***** Run: " + runCounter);
+        logger.info("\n***** Run: " + runCounter);
         if (runCounter > 0) {
             domain.post = lastInit;
             flowPoint.setDomain(domain);
@@ -78,7 +83,7 @@ public class FileFlowAnalysis extends Analysis<FileFlowAnalysisDomain> {
         } catch (FileStructureException e) {
             if (Analyzer.CONTINUE_ON_ERROR && runCounter == 0) {
                 domain.init.forceCreate(va);
-                System.out.println(e.getMessage());
+                logger.info(e.getMessage());
             }
             throw new AnalysisException(e.getMessage());
         }
@@ -160,26 +165,32 @@ public class FileFlowAnalysis extends Analysis<FileFlowAnalysisDomain> {
             s2 = ctx.condition().getChild(1).getText();
         }
         if (s1 == null || s2 == null) {
+            logger.severe("Invalid command");
             System.err.println("Invalid command");
-            return domain;
+            // TODO: throw an analysis exception
+            throw new AnalysisException("invalid command");
+//            return domain;
         }
 
         if (s1.equals("exists")) {
             VariableAutomaton va = domain.table.get(s2);
             boolean exists = domain.post.fileExists(va);
             if (!exists) {
-                System.out.printf("WARNING: '%s**' does not exist\n", va);
+                logger.info(String.format("WARNING: '%s**' does not exist\n", va));
             }
         } else if (s1.equals("!") && s2.startsWith("exists")) {
             String b = ctx.condition().getChild(1).getChild(1).getText();
             VariableAutomaton va = domain.table.get(b);
             boolean exists = domain.post.fileExists(va);
             if (exists) {
-                System.out.printf("WARNING: '%s**' exists\n", va);
+                logger.info(String.format("WARNING: '%s**' exists\n", va));
             }
         } else {
+            logger.severe("Invalid assertion.");
             System.err.println("Invalid assertion.");
-            return domain;
+            // TODO: throw an analysis exception
+            throw new AnalysisException("invalid assertion");
+//            return domain;
         }
         return domain;
     }
