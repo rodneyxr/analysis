@@ -30,6 +30,7 @@ public class FileFlowAnalysis extends Analysis<FileFlowAnalysisDomain> {
     @Override
     public FileFlowAnalysisDomain onBegin(FileFlowAnalysisDomain domain, FlowPoint flowPoint) throws AnalysisException {
         logger.info("\n***** Run: " + runCounter);
+        System.out.println("\n***** Run: " + runCounter);
         if (runCounter > 0) {
             domain.post = lastInit;
             flowPoint.setDomain(domain);
@@ -51,6 +52,10 @@ public class FileFlowAnalysis extends Analysis<FileFlowAnalysisDomain> {
     public FileFlowAnalysisDomain onBefore(FileFlowAnalysisDomain domain, FlowPointContext context) throws AnalysisException {
         gDomain = (GrammarAnalysisDomain) context.getFlowPoint().getDomain(GrammarAnalysisDomain.class);
         vDomain = (VariableAnalysisDomain) context.getFlowPoint().getDomain(VariableAnalysisDomain.class);
+
+        // Revert domains' working directory back to root on each run
+        domain.init.changeWorkingDirectory(VariableAutomaton.SEPARATOR_VA);
+        domain.post.changeWorkingDirectory(VariableAutomaton.SEPARATOR_VA);
         return super.onBefore(domain, context);
     }
 

@@ -1,0 +1,13 @@
+mkdir 'docket';
+cp 'client' 'docket/';
+cp 'registry' 'docket/';
+cd 'docket';
+mkdir 'libowfat';
+cd 'libowfat';
+cd '/';
+mkdir 'opentracker';
+cd 'opentracker';
+cd '/registry';
+$x0 = INPUT;
+cd '/client';
+$x1 = INPUT;

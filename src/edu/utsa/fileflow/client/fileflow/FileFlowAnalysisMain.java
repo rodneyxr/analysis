@@ -91,6 +91,7 @@ public class FileFlowAnalysisMain {
                 try {
                     FlowPoint cfg = FileFlowHelper.generateControlFlowGraphFromFile(f);
                     writeDOT(cfg, saveDir);
+                    System.out.println("\n\n==============================================================================");
                     System.out.println(saveDir);
                     FFA ffa = new FFA(cfg);
                     GraphvizGenerator.PATH_PREFIX = saveDir;
@@ -105,7 +106,6 @@ public class FileFlowAnalysisMain {
                     if (FileFlowAnalysisMain.DEBUG)
                         System.out.println(timeResults);
                 } catch (Exception e) {
-                    // TODO: log the failed analyses
                     mainLogger.warning("failed to analyze: " + f);
                     System.err.println("error: failed to analyze " + f);
                 } finally {

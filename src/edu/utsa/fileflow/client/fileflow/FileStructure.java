@@ -61,6 +61,7 @@ public class FileStructure implements Cloneable, Mergeable<FileStructure> {
 
 	/**
 	 * Changes the current working directory.
+	 * TODO: handle '..' and '.' (Use Transducers.FST_PARENT_DIR)
 	 */
 	public void changeWorkingDirectory(VariableAutomaton fp) {
 		if (fp.startsWith(FileStructure.separator())) {
